@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Weather App</title>
+    <!-- CSS links --> 
+    <link rel="stylesheet" href="css/style.css" type="text/css">    
+    <link rel="stylesheet" href="lib/bootstrap/css/bootstrap.css" type="text/css">
+    
+    <!-- JS links --> 
+    <script src="lib/jquery/jquery-1.11.2.js"></script>
+    <script src="lib/angular/angular.js"></script>
+    <script src="lib/bootstrap/js/bootstrap.js"></script>
+
+    <script>
+        function getOutput()
+        {
+            var location = document.getElementById("location").value;
+            var request = new XMLHttpRequest();
+            var response;
+            var output = document.getElementById("output");
+            
+            request.open('POST','http://api.openweathermap.org/data/2.5/weather?units=imperial&q=' + location, false);
+            request.send(null);            
+                         
+            if(request.state == 200)
+            {
+        response = JSON.parse(request.responseText);
+        var weatherIcon = "<img src=\"http://openweathermap.org/img/w/" + response.weather[0].icon + ".png\" />";
+        var temperature = response.main.temp + " Degrees and " + response.weather[0].description;                
+        output.innerHTML = "<h1>" + weatherIcon + temperature + "</h1>";
+            }   else
+                {
+                    output.innerHTML = "failed";
+                }
+        }
+        
+        function clearOutput()
+        {
+            output.innerHTML = "";
+        }
+    </script>
+</head>
+<body>
+   
+    <header>
+        <div class="container">
+            <h1>OpenWeatherMap.org</h1>
+        </div>
+    </header>
+   
+    <main>
+       <div class="container">           
+           <div class="current">
+                <h2 class="currentHeader">What will the weather be like?</h2>
+                    <div>
+                        <label for="location">Location (city, 2-digit-country):</label><br>
+                        <input id="location" type="text" value="London,uk"><br>
+                    </div>
+                    <div>
+                        <button onclick="getOutput();" class="submit-button">Get weather!</button><br><br>
+                        <button onclick="clearOutput();" class="submit-button">Clear input!</button><br>
+                    </div>
+                    <div id="output"></div>
+                <br><br>                        
+           </div>
+        </div>
+    </main>
+    
+    <footer>
+        <div class="container">
+            <div>Copyright &copy; 2015 TBM</div>
+        </div>
+    </footer>
+    
+</body>
+</html>
+
+
+
+
+
+
